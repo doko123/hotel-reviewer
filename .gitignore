@@ -1,0 +1,25 @@
+# Byte-compiled / optimized / DLL files
+__pycache__
+*.py[cod]
+*$py.class
+
+# mypy
+.mypy_cache/
+
+# coverage
+cov_html
+
+# packaging
+.eggs
+
+#Pycharm env files
+.idea/
+
+# pytest files
+.cache
+.pytest_cache
+
+pip.conf
+
+# OS X
+.DS_Store
