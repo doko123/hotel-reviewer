@@ -1,0 +1,89 @@
+# Python CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-python/ for more details
+#
+version: 2
+jobs:
+  build:
+    docker:
+      # specify the version you desire here
+      # use `-browsers` prefix for selenium tests, e.g. `3.6.1-browsers`
+      - image: circleci/python:3.6.1
+
+      # Specify service dependencies here if necessary
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/docs/2.0/circleci-images/
+      # - image: circleci/postgres:9.4
+
+      # Docker containers to build. First is the name of the container, second- name of the Dockerfile. Additional containers seperated with a space.
+      DOCKER_INFO: 'hotel_reviewer, hotel_reviewer'
+      # Additional registries for built docker containers to be pushed to. Always pushes to the registry in PROJECT_NAME.
+      DEPLOYMENTS: 'fusionrm-synthetic-inventory,fusionrm-synthetic-inventory fusionrm-synthetic-inventory-celery,fusionrm-synthetic-inventory-celery'
+      # Containers name seperated by space that need to run bandit & flask & tests
+      TEST_CONTAINERS: 'hotel_reviewer'
+      # Command to execute during the tests step.
+      TEST_COMMAND: 'unittest'
+
+    working_directory: ~/repo
+    branches:
+      only:
+        - master
+        - integration
+        - demo
+        - /\d+-(feature|fix)*\/.*/
+
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "requirements.txt" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
+      - run:
+          name: install dependencies
+          command: |
+            python3 -m venv venv
+            . venv/bin/activate
+            pip install -r requirements.txt
+
+      - save_cache:
+          paths:
+            - ./venv
+          key: v1-dependencies-{{ checksum "requirements.txt" }}
+
+      # run tests!
+      # this example uses Django's built-in test-runner
+      # other common Python testing frameworks include pytest and nose
+      # https://pytest.org
+      # https://nose.readthedocs.io
+     - run:
+          name: docker build
+          command: |
+            chmod +x .circleci/docker.sh
+            .circleci/docker.sh
+
+      - store_artifacts:
+          path: test-reports
+          destination: test-reports
+
+      - run:
+          name: bandit
+          command: |
+            for CONTAINER in ${TEST_CONTAINERS} ; do
+              docker-compose run ${CONTAINER} bandit -r .
+            done
+
+      - run:
+          name: flake8
+          command: |
+            for CONTAINER in ${TEST_CONTAINERS} ; do
+              docker-compose run ${CONTAINER} flake8 --count --statistics .
+            done
+
+      - run:
+          name: maketest
+          command: |
+            make ${TEST_COMMAND}
