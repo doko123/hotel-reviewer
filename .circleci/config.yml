@@ -7,21 +7,23 @@ jobs:
   build:
     docker:
       - image: circleci/python:3.6.5
-
     steps:
       - checkout
       - run:
           command: |
-            mkdir test-reports
-      - restore_cache:
-          key: deps1-{{ .Branch }}-{{ checksum "app/requirements.txt" }}
+            ls
       - run:
           command: |
-            python3 -m venv venv
+            mkdir test-reports
+      - restore_cache:
+          key: deps1-{{ .Branch }}-{{ checksum "requirements.txt" }}
+      - run:
+          command: |
+            cd app/; python3 -m venv venv
             . venv/bin/activate
-            pip install -r app/requirements.txt
+            pip install -r requirements.txt
       - save_cache:
-          key: deps1-{{ .Branch }}-{{ checksum "app/requirements.txt" }}
+          key: deps1-{{ .Branch }}-{{ checksum "requirements.txt" }}
           paths:
             - "venv"
       - run:

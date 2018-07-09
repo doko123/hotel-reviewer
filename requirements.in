@@ -1,0 +1,15 @@
+celery
+dynaconf
+flask
+flask_restful
+requests
+# mypy cannot find
+pylint
+# black cannot find
+redis
+ipdb
+pytest
+pytest-flask
+pytest-html
+requests-mock
+flake8
