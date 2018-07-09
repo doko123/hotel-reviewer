@@ -20,12 +20,15 @@ click==6.7                # via dynaconf, flask
 configparser==3.5.0       # via flake8, pylint
 decorator==4.3.0          # via ipython, traitlets
 dynaconf==1.0.2
+elasticsearch==6.3.0
 enum34==1.1.6             # via astroid, flake8, traitlets
 flake8==3.5.0
 flask-restful==0.3.6
 flask==1.0.2
 funcsigs==1.0.2           # via pytest
+funcy==1.10.3
 futures==3.1.1            # via isort
+gunicorn==19.9.0
 idna==2.7                 # via requests
 ipdb==0.11
 ipython-genutils==0.2.0   # via traitlets
@@ -65,7 +68,7 @@ singledispatch==3.4.0.3   # via astroid, pylint
 six==1.11.0               # via astroid, dynaconf, flask-restful, more-itertools, pathlib2, prompt-toolkit, pylint, pytest, requests-mock, singledispatch, traitlets
 toml==0.9.4               # via dynaconf
 traitlets==4.3.2          # via ipython
-urllib3==1.23             # via requests
+urllib3==1.23             # via elasticsearch, requests
 vine==1.1.4               # via amqp
 wcwidth==0.1.7            # via prompt-toolkit
 werkzeug==0.14.1          # via flask, pytest-flask

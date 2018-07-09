@@ -7,6 +7,10 @@ jobs:
   build:
     docker:
       - image: circleci/python:3.6.5
+    branches:
+      only:
+        - master
+        - /\d+\-[feature|bug]+\/.+/
     steps:
       - checkout
       - run:

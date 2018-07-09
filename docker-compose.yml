@@ -3,8 +3,31 @@ services:
   hotel_reviewer:
     build: .
     ports:
-     - "5000:5000"
+      - "5000:5000"
+    environment:
+      - ELASTIC_INDEX=hotel_index
     volumes:
-     - ./app:/app
+      - ./app:/app
+    entrypoint: ''
+    image: hotel_reviewer
+    links:
+      - elasticsearch
+      - redis
+    stdin_open: true
+    tty: true
+
   redis:
     image: redis:4.0
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.3.0
+    environment:
+      - cluster.name=hotel_reviewer-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - 9200:9200

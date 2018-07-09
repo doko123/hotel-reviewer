@@ -28,11 +28,10 @@ ENV PYTHONIOENCODING=utf-8 \
     FLASK_APP=app.py \
     DYNACONF_SETTINGS=config.settings
 
-
 WORKDIR /app
 
 ######################
 # Run Application
 ######################
 
-CMD ["python", "app.py"]
+CMD ["/usr/local/bin/gunicorn", "app:application", "-b", "0.0.0.0:5000", "-t 10800"]
