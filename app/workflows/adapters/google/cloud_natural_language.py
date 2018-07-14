@@ -1,5 +1,5 @@
 """
-This solution supports only 10 languages:
+This solution supports only 10 languages listed below:
 Chinese (Simplified)	zh
 Chinese (Traditional)	zh-Hant
 English	en

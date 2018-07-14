@@ -2,6 +2,7 @@ celery
 dynaconf
 flask
 flask_restful
+funcy
 requests
 # mypy cannot find
 pylint
@@ -13,3 +14,5 @@ pytest-flask
 pytest-html
 requests-mock
 flake8
+elasticsearch
+gunicorn
