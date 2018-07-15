@@ -1,0 +1,44 @@
+from dynaconf import settings
+import requests
+
+# from config.exceptions import
+
+
+class MicrosoftManager:
+    language_api_url = "".join((settings.TEXT_ANALYTICS_BASE_URL, "languages"))
+    sentiment_api_url = "".join((settings.TEXT_ANALYTICS_BASE_URL, "sentiment"))
+    headers = {"Ocp-Apim-Subscription-Key": settings.SUBSCRIPTION_API_KEY}
+
+    # TODO validate request and response
+    def _make_request(self, comments, url):
+        body = {"documents": comments}
+        response = requests.post(url, headers=self.headers, json=body)
+        if response.status_code == 200:
+            return response.json()["documents"]
+
+    def detect_languages(self, comments):
+        language_response = self._make_request(comments, self.language_api_url)
+        if not language_response:
+            return {"documents": []}
+        sorted_comments = sorted(comments, key=lambda k: k["id"])
+        sorted_language_response = sorted(
+            language_response, key=lambda k: k["id"]
+        )
+        for ind, detected_languages in enumerate(sorted_language_response):
+            sorted_comments[ind]["language"] = []
+            for detected_language in detected_languages["detectedLanguages"]:
+                sorted_comments[ind]["language"].append(
+                    detected_language["iso6391Name"]
+                )
+        return {"documents": sorted_comments}
+
+    def get_sentiment_measured(self, comments):
+        sentiment_response = self._make_request(
+            comments, self.sentiment_api_url
+        )
+        if not sentiment_response:
+            return {"documents": []}
+        scores_sum = sum(
+            (sentiment["score"] for sentiment in sentiment_response)
+        )
+        return round(scores_sum / len(sentiment_response) * 100, 2)
