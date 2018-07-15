@@ -1,4 +1,4 @@
-version: '3'
+version: '3.3'
 services:
   hotel_reviewer:
     build: .
@@ -6,6 +6,7 @@ services:
       - "5000:5000"
     environment:
       - ELASTIC_INDEX=hotel_index
+      - SUBSCRIPTION_API_KEY=5bf21c030f55483a9aab8659dc9cee51
     volumes:
       - ./app:/app
     entrypoint: ''
