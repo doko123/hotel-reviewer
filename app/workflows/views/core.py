@@ -1,6 +1,8 @@
 from flask import jsonify, Flask, Response, render_template, redirect, url_for, request
 from flask_restful import Resource
 
+from workflows.use_cases import review_hotel
+
 
 
 class HealthCheckResource(Resource):
@@ -19,7 +21,8 @@ class HomePageResource(Resource):
         return Response(render_template("home.html"), mimetype="text/html")
 
     def post(self):
-        if not request.form["hotel_name"]:
+        hotel_name = request.form["hotel_name"]
+        if not hotel_name:
             return redirect(url_for("homepageresource"))
-        
 
+        return review_hotel.HotelReviewUseCase().review_hotel(hotel_name)

@@ -13,6 +13,7 @@ class MicrosoftManager:
     def _make_request(self, comments, url):
         body = {"documents": comments}
         response = requests.post(url, headers=self.headers, json=body)
+
         if response.status_code == 200:
             return response.json()["documents"]
 
@@ -25,12 +26,9 @@ class MicrosoftManager:
             language_response, key=lambda k: k["id"]
         )
         for ind, detected_languages in enumerate(sorted_language_response):
-            sorted_comments[ind]["language"] = []
             for detected_language in detected_languages["detectedLanguages"]:
-                sorted_comments[ind]["language"].append(
-                    detected_language["iso6391Name"]
-                )
-        return {"documents": sorted_comments}
+                sorted_comments[ind]["language"] = detected_language["iso6391Name"]
+        return sorted_comments
 
     def get_sentiment_measured(self, comments):
         sentiment_response = self._make_request(
@@ -38,7 +36,11 @@ class MicrosoftManager:
         )
         if not sentiment_response:
             return {"documents": []}
-        scores_sum = sum(
-            (sentiment["score"] for sentiment in sentiment_response)
-        )
-        return round(scores_sum / len(sentiment_response) * 100, 2)
+        # scores_sum = sum(
+        #     (sentiment["score"] for sentiment in sentiment_response)
+        # )
+        import ipdb;ipdb.set_trace()
+        reduced_scores = [
+            s["score"] for s in sentiment_response if s["score"] > 0.5
+        ]
+        return round(len(reduced_scores) / len(sentiment_response) * 100, 2)
