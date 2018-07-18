@@ -25,5 +25,5 @@ comments_per_hotel = {
         " he refuse to make. really I was regretting, like we r paying  and"
         " begging for their services"
     ],
-    "Hilton Dubai": ["lovely!"],
+    "Hilton Dubai": ["lovely!"]
 }

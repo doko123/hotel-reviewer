@@ -1,4 +1,4 @@
-FROM python:3.6-alpine3.7 as builder
+FROM joyzoursky/python-chromedriver:3.6-selenium as builder
 
 LABEL maintainer="Dominika Kowalczyk <dominika15kowalczyk@gmail.com>"
 
@@ -13,11 +13,15 @@ RUN cd /req; pip install -r requirements.txt
 # Install Application
 ######################
 
-FROM python:3.6-alpine3.7
+FROM joyzoursky/python-chromedriver:3.6-selenium
 COPY --from=builder /usr/local/ /usr/local/
 COPY --from=builder /root/.cache /root/.cache
+
+# Copy the current directory contents into the container at /app
 COPY app/ /app/
 
+# Make port 80 available to the world outside this container
+EXPOSE 80
 
 ######################
 # Set Application Environment Variables
@@ -28,10 +32,11 @@ ENV PYTHONIOENCODING=utf-8 \
     FLASK_APP=app.py \
     DYNACONF_SETTINGS=config.settings
 
+# Set the working directory to /app
 WORKDIR /app
 
 ######################
 # Run Application
 ######################
-
+# Run app.py when the container launches
 CMD ["/usr/local/bin/gunicorn", "app:application", "-b", "0.0.0.0:5000", "-t 10800"]
