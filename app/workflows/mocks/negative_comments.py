@@ -16,11 +16,6 @@ comments_per_hotel = {
         " checking out was excellent.",
         "ambiance was ok"
     ],
-    "Hilton Dubai": [
-
-    ],
-    "Rove Downtown": [
-        "bad!!!!!"
-    ]
-
+    "Hilton Dubai": [],
+    "Rove Downtown": ["bad!!!!!"],
 }

@@ -1,6 +1,9 @@
-from workflows.mocks.positive_comments import comments_per_hotel as good_opinions
+from workflows.mocks.positive_comments import (
+    comments_per_hotel as good_opinions
+)
 from workflows.mocks.negative_comments import comments_per_hotel as bad_opinions
 import uuid
+
 
 def get_positive(hotel_name):
     opinions = good_opinions.get(hotel_name, [])

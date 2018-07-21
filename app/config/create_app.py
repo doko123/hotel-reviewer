@@ -16,7 +16,7 @@ def setup_es():
 
 def create_app(testing=False, debug=False):
 
-    app = Flask(__name__, template_folder='../templates')
+    app = Flask(__name__, template_folder="../templates")
     app.testing = testing
     app.url_map.strict_slashes = False
     app.config["PROPAGATE_EXCEPTIONS"] = True

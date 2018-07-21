@@ -27,7 +27,9 @@ class MicrosoftManager:
         )
         for ind, detected_languages in enumerate(sorted_language_response):
             for detected_language in detected_languages["detectedLanguages"]:
-                sorted_comments[ind]["language"] = detected_language["iso6391Name"]
+                sorted_comments[ind]["language"] = detected_language[
+                    "iso6391Name"
+                ]
         return sorted_comments
 
     def get_sentiment_measured(self, comments):
@@ -39,7 +41,6 @@ class MicrosoftManager:
         # scores_sum = sum(
         #     (sentiment["score"] for sentiment in sentiment_response)
         # )
-        import ipdb;ipdb.set_trace()
         reduced_scores = [
             s["score"] for s in sentiment_response if s["score"] > 0.5
         ]
