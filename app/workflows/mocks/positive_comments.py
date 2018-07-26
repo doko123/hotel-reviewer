@@ -13,7 +13,7 @@ comments_per_hotel = {
         "The usual casual but professional service of the staff makes us "
         "so comfortable.",
         "The staff are Wow!!!!,Hotel ambiance amazing,Rooms perfect,"
-        "Check-in Wonderful"
+        "Check-in Wonderful",
     ],
     "Hyatt Regency Dubai Creek Heights": [
         "very poor service, poor breakfast,when first day we arrived. "

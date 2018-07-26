@@ -7,6 +7,8 @@ services:
     environment:
       - ELASTIC_INDEX=hotel_index
       - SUBSCRIPTION_API_KEY=5bf21c030f55483a9aab8659dc9cee51
+      - DEBUG=@bool false
+      - TESTING=@bool false
     volumes:
       - ./app:/app
     entrypoint: ''

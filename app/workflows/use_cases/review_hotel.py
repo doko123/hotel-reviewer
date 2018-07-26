@@ -3,7 +3,6 @@ from workflows.providers.microsoft import MicrosoftManager
 
 
 class HotelReviewUseCase:
-
     def review_hotel(self, hotel_name):
 
         # fetch_comments: list of contents

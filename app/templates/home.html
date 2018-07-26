@@ -6,14 +6,14 @@
   </head>
   <body>
     <div class="container">
-      <h1>Pass hotel name</h1>
+      <h1 align="center">Review hotel</h1>
       <br>
-      <form action="" method="post">
+      <form action="" method="post" align="center">
         <input type="text" placeholder="Hotel name" name="hotel_name" value="{{
-          request.form.hotel_name }}">
-         <input type="password" placeholder="Location" name="location" value="{{
-          request.form.location }}">
-        <input class="btn btn-default" type="submit" value="Review">
+          request.form.hotel_name }}" align="center">
+         <input type="text" placeholder="Location" name="location" value="{{
+          request.form.location }}" align="center">
+        <input class="btn btn-default" type="submit" value="Review" >
       </form>
       {% if error %}
         <p class="error"><strong>Error:</strong> {{ error }}

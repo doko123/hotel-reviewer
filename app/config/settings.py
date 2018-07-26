@@ -5,3 +5,5 @@ TEXT_ANALYTICS_BASE_URL = (
     "https://westcentralus.api.cognitive.microsoft.com/text/analytics/v2.0/"
 )
 SUBSCRIPTION_API_KEY = os.environ.get("SUBSCRIPTION_API_KEY")
+DEBUG = os.environ.get("DEBUG", False)
+TESTING = os.environ.get("TESTING", False)

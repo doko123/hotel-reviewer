@@ -30,8 +30,8 @@ def create_app(testing=False, debug=False):
 
     # CORE ENDPOINTS
     api.add_resource(views.HomePageResource, "/home/")
-    # TODO: Make it available only for debug mode
-    api.add_resource(views.HealthCheckResource, "/healthcheck/")
+    if debug:
+        api.add_resource(views.HealthCheckResource, "/healthcheck/")
 
     return app, es
 
