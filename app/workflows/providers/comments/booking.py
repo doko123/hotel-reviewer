@@ -1,67 +1,115 @@
-from selenium import webdriver
-import time
+import uuid
+
+from config.selenium import SeleniumSetup
 
 
-def hotel_scrapper(hotel_name, location):
-    negatives = []  # container for negative comments
-    positives = []  # container for possitive comments
-    execute_time = time.time()
+class HotelScrapper:
+    homepage = None
+    provider = None
 
-    chrome_options = webdriver.ChromeOptions()
-    chrome_options.add_argument('--no-sandbox')
-    chrome_options.add_argument('--headless')
-    chrome_options.add_argument('--disable-gpu')
-    driver = webdriver.Chrome(chrome_options=chrome_options)
-    driver.implicitly_wait(10)
-    driver.set_page_load_timeout(20)
-    driver.get("https://booking.com")
+    def __init__(self, hotel_name, location):
+        self.driver = SeleniumSetup().driver
+        self.hotel_name = hotel_name
+        self.location = location
+        self.reviews = []
 
-    write_hotel_name_and_loc = driver.find_element_by_xpath(
-        '//*[@id="ss"]'
-    )  # find field to type data
-    write_hotel_name_and_loc.send_keys(
-        "{} {}".format(hotel_name, location)
-    )  # type data
+    def scrappe(self):
+        self.driver.get(self.homepage)
+        self.driver.set_page_load_timeout(20)
 
-    search_button = driver.find_element_by_class_name(
-        "sb-searchbox__button  "
-    )  # find 'search' button
-    search_button.click()  # click that button
 
-    hotel_name_path = driver.find_element_by_xpath(
-        '//*[@id="hotellist_inner"]/div[1]/div[2]/div[1]/div[1]/h3/a '
-    )
-    # get first match
-    hotel_name_path.click()
+class TrivagoScrapper(HotelScrapper):
+    homepage = "https://trivago.com"
+    provider = "trivago"
 
-    time.sleep(3)  # wait for open and load new windowecho "" > .gitignore
-    driver.switch_to.window(driver.window_handles[-1])  # switch to new window
+    # TODO: Find out how to find Reviews element
+    def scrappe(self):
 
-    element = driver.find_element_by_id(
-        "show_reviews_tab"
-    )  # find 'Guest rating button
-    element.click()
+        write_hotel_and_name_loc = self.driver.find_element_by_xpath(
+            '//*[@id="horus-querytext"]'
+        )
+        write_hotel_and_name_loc.send_keys(
+            "{} {}".format(self.hotel_name, self.location)
+        )
 
-    time.sleep(3)
-    negs = driver.find_elements_by_class_name(
-        "review_neg "
-    )  # find all negative comments
-    time.sleep(5)
-    negatives = [
-        each_neg.get_attribute("innerText")[4:] for each_neg in negs
-    ]  # get negatives
+        search_button = self.driver.find_element_by_xpath(
+            '//*[@id="js-fullscreen-hero"]/div/form/div/div[1]'
+            "/div/div/div[2]/button"
+        )
+        search_button.click()
 
-    pos = driver.find_elements_by_class_name(
-        "review_pos "
-    )  # find all positive comments
-    positives = [
-        each_pos.get_attribute("innerText")[4:] for each_pos in pos
-    ]  # get positives
+        hotel_path = self.driver.find_element_by_xpath(
+            "//*[@class = 'name__copytext m-0 item__slideout-toggle']"
+        )
+        self.driver.execute_script("arguments[0].click();", hotel_path)
 
-    full_comment = [
-        {"comment": "{}{}".format(pos, neg)}
-        for pos, neg in zip(positives, negatives)
-    ]  # create json
-    driver.quit()
-    print(full_comment)  # zamień na return! \/ usuń.
-    print("--- %s seconds ---" % (time.time() - execute_time))
+        hotel_reviews_path = self.driver.find_element_by_name("Reviews")
+        self.driver.execute_script("arguments[0].click();", hotel_reviews_path)
+
+        comments = self.driver.find_elements_by_xpath(
+            '//*[@class="sl-review__summary  sl-review__'
+            'summary--ltr m-0 w-100 fl-leading"]'
+        )
+
+        for comment in comments:
+            comment = {
+                "id": self.provider,
+                "comment": comment.get_attribute("innerText"),
+            }
+            self.comments.append(comment)
+
+
+class BookingScrapper(HotelScrapper):
+    homepage = "https://booking.com"
+    provider = "booking"
+
+    def scrappe(self):
+        super().scrappe()
+        # enter search data
+        hotel_name_and_loc = self.driver.find_element_by_xpath('//*[@id="ss"]')
+        hotel_name_and_loc.send_keys(
+            "{} {}".format(self.hotel_name, self.location)
+        )
+
+        # find 'search' button
+        search_button = self.driver.find_element_by_class_name(
+            "sb-searchbox__button  "
+        )
+        search_button.click()  # click that button
+
+        # get first match
+        exact_hotel_xpath = (
+            '//*[@id="hotellist_inner"]/div[1]/table/tbody/tr[1]/'
+            "td[2]/h3/a/span[1]"
+        )
+        hotel_name = self.driver.find_element_by_xpath(exact_hotel_xpath)
+        hotel_name.click()
+
+        # switch to new window
+        self.driver.switch_to.window(self.driver.window_handles[-1])
+
+        # find 'Guest rating button
+        reviews = self.driver.find_element_by_id("show_reviews_tab")
+        reviews.click()
+
+        self._extract_comments()
+
+    def _extract_comments(self):
+
+        positive_reviews = self.driver.find_elements_by_class_name(
+            "review_pos "
+        )
+        negative_reviews = self.driver.find_elements_by_class_name(
+            "review_neg "
+        )
+
+        for p_review, n_review in zip(positive_reviews, negative_reviews):
+
+            comment = f"{self._format(p_review)} {self._format(n_review)}"
+            self.reviews.append(
+                {"id": f"{self.provider}_{uuid.uuid4()}", "comment": comment}
+            )
+        return self.reviews
+
+    def _format(self, review):
+        return review.get_attribute("innerText")[2:]

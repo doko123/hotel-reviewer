@@ -1,3 +1,4 @@
 [flake8]
 ignore=E121,E122,E123,E126,E722
 max-line-length=80
+exclude=workflows/mocks/

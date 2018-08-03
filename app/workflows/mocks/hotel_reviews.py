@@ -1,0 +1,46 @@
+[
+    {
+        "id": "booking_bfbfc1da-959e-4ae5-9c43-19864a6fdf30",
+        "comment": "Rooms are very comfortable and clean. The bar located at the ground level is really nice. We had some dumplings and drinks which were beautiful! Location if you are interested in sightseeing"
+    },
+    {
+        "id": "booking_8c26ea20-1013-43aa-bc6d-56c850826329",
+        "comment": "Extra extra comfy bed I liked everything. The hotel is excellent!"
+    },
+    {
+        "id": "booking_338b0cd9-9a7d-4268-81c1-1b4d358e7274",
+        "comment": "Access to Club Lounge  - very good snacks, breakfast and free drinks from 6pm to 9pm. Incredibly undertrained staff, from front desk to housekeeping. Pretty bad room service, too. Nowhere near what 5 stars should be."
+    },
+    {
+        "id": "booking_1edeb26f-135b-48d7-b25b-bfeb89a508a6",
+        "comment": "Excellent hotel at a reasonable price in the heart of Warsaw! Refurbished, spacious rooms, excellent staff, stylish interriors. I had pre paid the room with my credit card from home but was refused check in until I could produce at least a copy of the card (which I never have on me). This entailed waiting over 20 minutes to access my room. I wasn't offered an alternative solution - such as a different payment method- to speed up check-in. Really disappointing for such a big chain."
+    },
+    {
+        "id": "booking_a0fb978a-d42e-4df0-ae6b-2d955e82d05d",
+        "comment": "Varied breakfast, great location. Hard to say"
+    },
+    {
+        "id": "booking_a72f6a35-2beb-4abd-a6cb-50c18087f4a5",
+        "comment": "Very convenient to city centre, super comfortable bedding, spotlessly clean Nothing"
+    },
+    {
+        "id": "booking_3e03510b-c5c2-4553-8562-6b1f6c15c661",
+        "comment": "We had a wonderful breakfast and the beds were really comfortable.\nIt's our second time in this hotel and we'll be back soon!\nHighly recommended! Front desk Service was absolutely below par. The stuff is lacking basic communication skills. My wife arrived to the hotel before me. They refused to check her in, despite the fact that our reservation was guaranteed with my credit card and non- refundable. They wanted my wife to pay again for the room and I was asked to send a foto of my Credit Card! by email. Finally we were offered 'free' breakfast as  a compensation. Later I found they charged my card for this. We did not get a receipt when checked out. Horrible experience in 5* Hotel."
+    },
+    {
+        "id": "booking_fcd974fe-2b4d-47a4-a676-537121bf798d",
+        "comment": "Service Breakfast was mediocre at best. Not worth spending extra for it. When I asked for an omelet, the staff didn't understand English. The spa/salon was a disgrace! Also didn't understand English. When I asked for a blow out, woman had no clue what I wanted. When it was explained to her, she was extremely rude and unprofessional and she absolutely had no clue what she was doing. I don't understand how such incompetence is even employed in a supposed 5 star hotel. Just horrible! "
+    },
+    {
+        "id": "booking_8b075c42-f7b2-4aaa-ab6f-e39024b1f742",
+        "comment": "Really luxurious accommodation that was exceptional value for money.  Staff was not friendly nor helpful. They were verrrrrrrry rude"
+    },
+    {
+        "id": "booking_391ee7d9-f5dd-4730-8c3e-e2aa44b413aa",
+        "comment": "Rooms are spacious and clean. Nothing special other than that.  Old receptionists man acted me very rude, I asked him about a club called Space Club, if it still operates.\nHis answer to me in a very rude way '' Sir, I am only responsible from Sheraton, not other places. '' You can always be responsible from one place, but you can act your customer kinder. And just after me, he fought with someone else, it is sad to see such people working at Sheraton !"
+    },
+    {
+        "id": "booking_b03fd27f-eead-4447-8aa4-310c4aa402f2",
+        "comment": "Not much I chose to take the green option with my towels etc, but when I came back at the end of the day, my room hadn\u2019t been touched at all, meaning that the coffee and water hadn\u2019t been resupplied. I know there was some fine print at the bottom of the green option card, but it was so small, I couldn\u2019t read it. But this overall, was only a small issue."
+    }
+]
