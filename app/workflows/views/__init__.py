@@ -1,2 +1,5 @@
-__all__ = "HealthCheckResource"
-from workflows.views.core import HealthCheckResource  # noqa
+__all__ = ["HealthCheckResource", "HomePageResource"]
+from workflows.views.core import (  # noqa
+    HealthCheckResource,
+    HomePageResource,
+)

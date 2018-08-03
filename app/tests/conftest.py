@@ -5,7 +5,7 @@ from funcy import first, second
 
 @pytest.fixture(scope="session")
 def setup_env():
-    return create_app.create_app()
+    return create_app.create_app(debug=True, testing=True)
 
 
 @pytest.fixture(scope="session")

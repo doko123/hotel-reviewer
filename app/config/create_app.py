@@ -14,12 +14,13 @@ def setup_es():
     return Elasticsearch(hosts="elasticsearch:9200")
 
 
-def create_app(testing=False):
+def create_app(testing=False, debug=False):
 
-    app = Flask(__name__)
+    app = Flask(__name__, template_folder="../templates")
     app.testing = testing
     app.url_map.strict_slashes = False
     app.config["PROPAGATE_EXCEPTIONS"] = True
+    app.debug = debug
 
     # setup elasticsearch
     es = setup_es()
@@ -28,8 +29,9 @@ def create_app(testing=False):
     api = Api(app)
 
     # CORE ENDPOINTS
-    # TODO: Make it available only for debug mode
-    api.add_resource(views.HealthCheckResource, "/healthcheck/")
+    api.add_resource(views.HomePageResource, "/home/")
+    if debug:
+        api.add_resource(views.HealthCheckResource, "/healthcheck/")
 
     return app, es
 
