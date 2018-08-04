@@ -1,15 +1,44 @@
-
-
 # Hotel_reviewer
-`docker-compose build`
+#####The aim of this project is to collect available comments about specified hotel from accommodation providers.
+#####Next bunch of the newest comments are analyzed with sentiment and based on that the score of positive side is calculated.
+#####This should ease future customers to make a correct choice to book.
 
-Run the selenium container using `docker-compose up selenium-hub` 
+###Setup commands
+1. Run application:
+    - `make start-flask`
+2. Wait until docker is build and up and go to:   
+    - `http://localhost:5000/home`
+    
+OR DEVELOPMENT PURPOSES:
+    
+1. Create network:  
+    - `docker network hotel_review`
+2. Build application:   
+    - `docker-compose build`
+2. Run application
+    - `docker-compose up` or `make start-flask`
 
-Wait for a chrome node
-`while ! (curl -sSL "http://localhost:4444/grid/console" | grep -i chrome) >/dev/null 2>&1; do echo -n "."; sleep 0.2; done`
+###Tests and code linters:
+1. Run tests: 
+    - `make test` or
+    - `docker-compose run --rm hotel_reviewer py.test /app/tests`
+2. Run tests with debug and last failed flag:
+    - `make test-debug` or
+    - `docker-compose run --rm hotel_reviewer py.test /app/tests -s -vv --lf`
+2. Run flake8:
+    - `make test-flake8` or
+    - `docker-compose run --rm hotel_reviewer flake8 .`
+3. Run python code formatter
+    - `make black`
 
-or wait for a firefox node
-`while ! (curl -sSL "http://localhost:4444/grid/console" | grep -i firefox) >/dev/null 2>&1; do echo -n "."; sleep 0.2; done`
+###Continuous Integration:
+1. Feature branch name must pass the regex formula:
+    - `/\d+\-[feature|bug]+\/.+/`
+2. All branches must pass circle-ci tests before merge to master branch
+3. Only squash and merge is accepted way of merging to master
 
-Run 
-`make test-selenium`
+####Positive scenario view:
+![positive_scenario](doko123.github.com/hotel-reviewer/app/docs/positive_scenario.png)
+
+####Negative scenario view:
+![negative_scenario](doko123.github.com/hotel-reviewer/app/docs/negative_scenario.png)

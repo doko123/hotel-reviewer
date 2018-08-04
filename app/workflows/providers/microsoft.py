@@ -1,7 +1,7 @@
 from dynaconf import settings
 import requests
 
-# from config.exceptions import
+from random import uniform
 
 
 class MicrosoftManager:
@@ -37,7 +37,9 @@ class MicrosoftManager:
             comments, self.sentiment_api_url
         )
         if not sentiment_response:
-            return {"documents": []}
+            if settings.AZURE_OUTDATED:
+                return uniform(2.5, 100.0)
+            return 0
         # scores_sum = sum(
         #     (sentiment["score"] for sentiment in sentiment_response)
         # )
