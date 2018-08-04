@@ -9,7 +9,7 @@ def test_booking(hotel_reviews):
 
     # WHEN
     scrapper = booking.BookingScrapper(hotel_name, location)
-    scrapper.scrappe()
+    scrapper.scrape()
 
     # THEN
     returned_comments = [review["comment"] for review in scrapper.reviews]

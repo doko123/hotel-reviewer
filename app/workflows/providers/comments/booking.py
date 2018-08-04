@@ -13,7 +13,7 @@ class HotelScrapper:
         self.location = location
         self.reviews = []
 
-    def scrappe(self):
+    def scrape(self):
         self.driver.get(self.homepage)
         self.driver.set_page_load_timeout(20)
 
@@ -22,8 +22,8 @@ class TrivagoScrapper(HotelScrapper):
     homepage = "https://trivago.com"
     provider = "trivago"
 
-    # TODO: Find out how to find Reviews element
-    def scrappe(self):
+    # TODO: Use regex to find Reviews element ny link or partial link
+    def scrape(self):
 
         write_hotel_and_name_loc = self.driver.find_element_by_xpath(
             '//*[@id="horus-querytext"]'
@@ -63,8 +63,8 @@ class BookingScrapper(HotelScrapper):
     homepage = "https://booking.com"
     provider = "booking"
 
-    def scrappe(self):
-        super().scrappe()
+    def scrape(self):
+        super().scrape()
         # enter search data
         hotel_name_and_loc = self.driver.find_element_by_xpath('//*[@id="ss"]')
         hotel_name_and_loc.send_keys(
