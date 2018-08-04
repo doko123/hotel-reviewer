@@ -1,11 +1,4 @@
-from flask import (
-    jsonify,
-    Response,
-    render_template,
-    redirect,
-    url_for,
-    request,
-)
+from flask import jsonify, Response, render_template, redirect, url_for, request
 from flask_restful import Resource
 
 from workflows.use_cases import review_hotel

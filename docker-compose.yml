@@ -1,12 +1,14 @@
 version: '3.3'
 services:
   hotel_reviewer:
-    build: .
+    build:
+      context: .
     ports:
       - "5000:5000"
     environment:
       - ELASTIC_INDEX=hotel_index
       - SUBSCRIPTION_API_KEY=5bf21c030f55483a9aab8659dc9cee51
+      - AZURE_OUTDATED=@bool true
       - DEBUG=@bool false
       - TESTING=@bool false
     volumes:
@@ -34,3 +36,4 @@ services:
         hard: -1
     ports:
       - 9200:9200
+

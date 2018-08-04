@@ -60,8 +60,28 @@ def expected_language_response():
 
 
 @pytest.fixture
+def expected_sentiment_response():
+    return {
+        "documents": [
+            {"score": 0.92, "id": "1"},
+            {"score": 0.85, "id": "2"},
+            {"score": 0.34, "id": "3"},
+        ],
+        "errors": None,
+    }
+
+
+@pytest.fixture
 def malformed_data():
     return [
         {"id": "1", "TEST": "This is a document written in English."},
         {"IDid": "2", "text": "Este es un document escrito en Español."},
     ]
+
+
+@pytest.fixture
+def hotel_reviews():
+    import json
+
+    with open("workflows/mocks/hotel_reviews.py") as f:
+        return json.load(f)

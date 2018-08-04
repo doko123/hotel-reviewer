@@ -63,6 +63,7 @@ redis==2.10.6
 requests-mock==1.5.0
 requests==2.19.1
 scandir==1.7              # via pathlib2
+selenium==3.13.0
 simplegeneric==0.8.1      # via ipython
 singledispatch==3.4.0.3   # via astroid, pylint
 six==1.11.0               # via astroid, dynaconf, flask-restful, more-itertools, pathlib2, prompt-toolkit, pylint, pytest, requests-mock, singledispatch, traitlets
