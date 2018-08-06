@@ -1,9 +1,9 @@
 # Hotel_reviewer
-#####The aim of this project is to collect available comments about specified hotel from accommodation providers.
-#####Next bunch of the newest comments are analyzed with sentiment and based on that the score of positive side is calculated.
-#####This should ease future customers to make a correct choice to book.
+##### The aim of this project is to collect available comments about specified hotel from accommodation providers.
+##### Next bunch of the newest comments are analyzed with sentiment and based on that the score of positive side is calculated.
+##### This should ease future customers to make a correct choice to book.
 
-###Setup commands
+### Setup commands
 1. Run application:
     - `make start-flask`
 2. Wait until docker is build and up and go to:   
@@ -18,7 +18,7 @@ OR DEVELOPMENT PURPOSES:
 2. Run application
     - `docker-compose up` or `make start-flask`
 
-###Tests and code linters:
+### Tests and code linters:
 1. Run tests: 
     - `make test` or
     - `docker-compose run --rm hotel_reviewer py.test /app/tests`
@@ -31,14 +31,14 @@ OR DEVELOPMENT PURPOSES:
 3. Run python code formatter
     - `make black`
 
-###Continuous Integration:
+### Continuous Integration:
 1. Feature branch name must pass the regex formula:
     - `/\d+\-[feature|bug]+\/.+/`
 2. All branches must pass circle-ci tests before merge to master branch
 3. Only squash and merge is accepted way of merging to master
 
-####Positive scenario view:
-![positive_scenario](doko123.github.com/hotel-reviewer/app/docs/positive_scenario.png)
+#### Positive scenario view:
+![positive_scenario](https://github.com/doko123/hotel-reviewer/blob/master/app/docs/positive_scenario.png)
 
-####Negative scenario view:
-![negative_scenario](doko123.github.com/hotel-reviewer/app/docs/negative_scenario.png)
+#### Negative scenario view:
+![negative_scenario](https://github.com/doko123/hotel-reviewer/blob/master/app/docs/negative_scenario.png)
