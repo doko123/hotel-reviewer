@@ -10,7 +10,7 @@ jobs:
     branches:
       only:
         - master
-        - /\d+\-[feature|bug]+\/.+/
+        - /\d+\-[feature|fix]+\/.+/
     steps:
       - checkout
       - run:
