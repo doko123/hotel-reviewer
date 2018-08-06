@@ -1,17 +1,27 @@
 import uuid
 
+from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.select import Select
+
 from config.selenium import SeleniumSetup
 
 
 class HotelScrapper:
     homepage = None
     provider = None
+    reviews = []
+    hotel_title = None
+    hotel_location_title = None
+    delay = 4  # timeout in seconds
 
     def __init__(self, hotel_name, location):
-        self.driver = SeleniumSetup().driver
+        self.selenium_setup = SeleniumSetup()
+        self.driver = self.selenium_setup.driver
         self.hotel_name = hotel_name
         self.location = location
-        self.reviews = []
 
     def scrape(self):
         self.driver.get(self.homepage)
@@ -22,7 +32,7 @@ class TrivagoScrapper(HotelScrapper):
     homepage = "https://trivago.com"
     provider = "trivago"
 
-    # TODO: Use regex to find Reviews element ny link or partial link
+    # TODO: Use regex to find Reviews element by link or partial link
     def scrape(self):
 
         write_hotel_and_name_loc = self.driver.find_element_by_xpath(
@@ -66,33 +76,73 @@ class BookingScrapper(HotelScrapper):
     def scrape(self):
         super().scrape()
         # enter search data
-        hotel_name_and_loc = self.driver.find_element_by_xpath('//*[@id="ss"]')
+
+        try:
+            hotel_name_and_loc = WebDriverWait(self.driver, self.delay).until(
+                EC.presence_of_element_located((By.XPATH, '//*[@id="ss"]'))
+            )
+        except TimeoutException:
+            self.selenium_setup.tear_down()
+            return
+
         hotel_name_and_loc.send_keys(
             "{} {}".format(self.hotel_name, self.location)
         )
 
         # find 'search' button
-        search_button = self.driver.find_element_by_class_name(
-            "sb-searchbox__button  "
-        )
-        search_button.click()  # click that button
+        try:
+            search_button = WebDriverWait(self.driver, self.delay).until(
+                EC.presence_of_element_located(
+                    (By.XPATH, '//*[@id="frm"]/div[1]/div[4]/div[2]/button')
+                )
+            )
+        except TimeoutException:
+            self.selenium_setup.tear_down()
+            return
+        self.driver.execute_script("arguments[0].click();", search_button)
 
         # get first match
         exact_hotel_xpath = (
             '//*[@id="hotellist_inner"]/div[1]/table/tbody/tr[1]/'
             "td[2]/h3/a/span[1]"
         )
-        hotel_name = self.driver.find_element_by_xpath(exact_hotel_xpath)
-        hotel_name.click()
+        self.hotel_location_title = self.driver.find_element_by_xpath(
+            '//*[@id="ss"]'
+        ).get_attribute("value")
+        try:
+            hotel_name = WebDriverWait(self.driver, self.delay).until(
+                EC.presence_of_element_located((By.XPATH, exact_hotel_xpath))
+            )
+        except TimeoutException:
+            self.selenium_setup.tear_down()
+            return
+        self.driver.execute_script("arguments[0].click();", hotel_name)
 
         # switch to new window
         self.driver.switch_to.window(self.driver.window_handles[-1])
 
+        self.hotel_title = self.driver.find_element_by_xpath(
+            '//*[@id="hp_hotel_name"]'
+        ).get_attribute("innerText")
+
         # find 'Guest rating button
-        reviews = self.driver.find_element_by_id("show_reviews_tab")
-        reviews.click()
+        try:
+            reviews = WebDriverWait(self.driver, self.delay).until(
+                EC.presence_of_element_located((By.ID, "show_reviews_tab"))
+            )
+        except TimeoutException:
+            self.selenium_setup.tear_down()
+            return
+        self.driver.execute_script("arguments[0].click();", reviews)
+
+        sort_by_date = Select(self.driver.find_element_by_xpath(
+            '//*[@id="review_sort"]'
+        ))
+        sort_by_date.select_by_value("f_recent_desc")
 
         self._extract_comments()
+
+        self.selenium_setup.tear_down()
 
     def _extract_comments(self):
 
@@ -107,9 +157,14 @@ class BookingScrapper(HotelScrapper):
 
             comment = f"{self._format(p_review)} {self._format(n_review)}"
             self.reviews.append(
-                {"id": f"{self.provider}_{uuid.uuid4()}", "comment": comment}
+                {"id": f"{self.provider}_{uuid.uuid4()}", "text": comment}
             )
         return self.reviews
 
     def _format(self, review):
-        return review.get_attribute("innerText")[2:]
+        return (
+            review.get_attribute("innerText")
+            .replace("\n", "")
+            .replace("눉", "")
+            .replace("눇", "")
+        )

@@ -23,5 +23,25 @@ class HomePageResource(Resource):
         hotel_name = request.form["hotel_name"]
         location = request.form["location"]
         if hotel_name and location:
-            return review_hotel.HotelReviewUseCase().review_hotel(hotel_name)
+            (
+                score,
+                comments_qty,
+                hotel_providers,
+                hotel_title,
+                loc_title
+            ) = review_hotel.HotelReviewUseCase().review_hotel(
+                hotel_name, location
+            )
+            return Response(
+                render_template(
+                    "home.html",
+                    hotel_title=hotel_title if hotel_title else hotel_name,
+                    hotel_location=loc_title if loc_title else location,
+                    score=score,
+                    comments_qty=comments_qty,
+                    hotel_providers=hotel_providers,
+                    errors=False if score else True,
+                ),
+                mimetype="text/html",
+            )
         return redirect(url_for("homepageresource"))

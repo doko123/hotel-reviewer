@@ -39,4 +39,4 @@ WORKDIR /app
 # Run Application
 ######################
 # Run app.py when the container launches
-CMD ["/usr/local/bin/gunicorn", "app:application", "-b", "0.0.0.0:5000", "-t 10800"]
+CMD ["/usr/local/bin/gunicorn", "app:application", "-b", "0.0.0.0:5000", "-t 10800", "--workers=2", '--worker-class="egg:meinheld#gunicorn_worker"', "gunicorn_test:app"]

@@ -77,11 +77,3 @@ def malformed_data():
         {"id": "1", "TEST": "This is a document written in English."},
         {"IDid": "2", "text": "Este es un document escrito en Español."},
     ]
-
-
-@pytest.fixture
-def hotel_reviews():
-    import json
-
-    with open("workflows/mocks/hotel_reviews.py") as f:
-        return json.load(f)

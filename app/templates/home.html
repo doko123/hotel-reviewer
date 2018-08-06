@@ -1,12 +1,12 @@
 <html>
-  <head>
+  <head style="padding: 30px;">
     <title>Hotel reviewer - Home page</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="UTF-8">
     <link href="static/bootstrap.min.css" rel="stylesheet" media="screen">
   </head>
-  <body>
-    <div class="container">
-      <h1 align="center">Review hotel</h1>
+  <body style="background-color: #ABCDEF">
+    <div class="container" style="padding: 50px;">
+      <h1 align="center" style="color:#29a8e8;font-family:verdana;">Review hotel</h1>
       <br>
       <form action="" method="post" align="center">
         <input type="text" placeholder="Hotel name" name="hotel_name" value="{{
@@ -15,8 +15,35 @@
           request.form.location }}" align="center">
         <input class="btn btn-default" type="submit" value="Review" >
       </form>
-      {% if error %}
-        <p class="error"><strong>Error:</strong> {{ error }}
+      {% if score %}
+         <h2 align="center" style="color:#29a8e8;font-family:verdana;"> The positive reviews of {{ hotel_title }} in {{ hotel_location }} is calculated on {{ comments_qty }} comments from {{ hotel_providers }}</h2>
+         <div align="center" id="piechart" style="background-color: #ABCDEF"></div>
+
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+        <script type="text/javascript">
+        // Load google charts
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+
+        // Draw the chart and set the chart values
+        function drawChart() {
+          var data = google.visualization.arrayToDataTable([
+          ['Type', 'Percentage'],
+          ['Positive', {{ score }}],
+          ['Negative', 100- {{score}}],
+        ]);
+
+          // Optional; add a title and set the width and height of the chart
+          var options = {backgroundColor: 'transparent', 'width':550, 'height':400};
+
+          // Display the chart inside the <div> element with id="piechart"
+          var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+          chart.draw(data, options);
+        }
+        </script>
+      {% elif errors %}
+      <p class="error" align="center" style="color:#e8514e;font-family:verdana;"><strong>Error: Could not calculate reviews 😫. Please try again later </strong> {{ error }}
       {% endif %}
     </div>
   </body>

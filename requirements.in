@@ -17,3 +17,6 @@ flake8
 elasticsearch
 gunicorn
 selenium
+js
+pytest-mock
+meinheld
