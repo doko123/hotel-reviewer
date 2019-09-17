@@ -7,7 +7,7 @@ def test_hotel_review(client, hotel_reviews):
     review_url = url_for("homepageresource")
     expected_result = (
         b"The positive reviews of Sheraton Warsaw Hotel in Warsaw is "
-        b"calculated on 11 comments from booking.com"
+        b"calculated on 1 comments from booking.com"
     )
 
     # WHEN

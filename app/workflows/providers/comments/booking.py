@@ -1,10 +1,13 @@
+import http
 import uuid
+
 
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
+import timeout_decorator
 
 from config.selenium import SeleniumSetup
 
@@ -23,7 +26,7 @@ class HotelScrapper:
         self.hotel_name = hotel_name
         self.location = location
 
-    def scrape(self):
+    def scrape(self, **kwargs):
         self.driver.get(self.homepage)
         self.driver.set_page_load_timeout(20)
 
@@ -33,7 +36,7 @@ class TrivagoScrapper(HotelScrapper):
     provider = "trivago"
 
     # TODO: Use regex to find Reviews element by link or partial link
-    def scrape(self):
+    def scrape(self, days_range=365, random=True, random_count=10):
 
         write_hotel_and_name_loc = self.driver.find_element_by_xpath(
             '//*[@id="horus-querytext"]'
@@ -73,10 +76,10 @@ class BookingScrapper(HotelScrapper):
     homepage = "https://booking.com"
     provider = "booking"
 
-    def scrape(self):
-        super().scrape()
-        # enter search data
+    @timeout_decorator.timeout(5)
+    def _scrape(self, days_range=365, random=True, random_count=10):
 
+        # enter search data
         try:
             hotel_name_and_loc = WebDriverWait(self.driver, self.delay).until(
                 EC.presence_of_element_located((By.XPATH, '//*[@id="ss"]'))
@@ -84,7 +87,6 @@ class BookingScrapper(HotelScrapper):
         except TimeoutException:
             self.selenium_setup.tear_down()
             return
-
         hotel_name_and_loc.send_keys(
             "{} {}".format(self.hotel_name, self.location)
         )
@@ -103,8 +105,8 @@ class BookingScrapper(HotelScrapper):
 
         # get first match
         exact_hotel_xpath = (
-            '//*[@id="hotellist_inner"]/div[1]/table/tbody/tr[1]/'
-            "td[2]/h3/a/span[1]"
+            '//*[@id="hotellist_inner"]/div'
+            '[1]/table/tbody/tr[1]/td[2]/h3/a/span[1]'
         )
         self.hotel_location_title = self.driver.find_element_by_xpath(
             '//*[@id="ss"]'
@@ -134,15 +136,28 @@ class BookingScrapper(HotelScrapper):
             self.selenium_setup.tear_down()
             return
         self.driver.execute_script("arguments[0].click();", reviews)
-
-        sort_by_date = Select(self.driver.find_element_by_xpath(
-            '//*[@id="review_sort"]'
-        ))
+        # choose order of displaying comments
+        sort_by_date = Select(
+            self.driver.find_element_by_xpath('//*[@id="review_sort"]')
+        )
         sort_by_date.select_by_value("f_recent_desc")
 
         self._extract_comments()
-
         self.selenium_setup.tear_down()
+
+    def scrape(self, days_range=365, random=True, random_count=10):
+        super().scrape()
+
+        try:
+            self._scrape(
+                days_range=days_range, random=random, random_count=random_count
+            )
+        except (timeout_decorator.timeout_decorator.TimeoutError, ValueError):
+            try:
+                self.selenium_setup.tear_down()
+            except http.client.CannotSendRequest:
+                return  # already closed
+            return
 
     def _extract_comments(self):
 

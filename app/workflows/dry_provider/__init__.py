@@ -1,7 +1,7 @@
-from workflows.mocks.positive_comments import (
+from workflows.dry_provider.positive_comments import (
     comments_per_hotel as good_opinions
 )
-from workflows.mocks.negative_comments import comments_per_hotel as bad_opinions
+from workflows.dry_provider.negative_comments import comments_per_hotel as bad_opinions
 import uuid
 
 

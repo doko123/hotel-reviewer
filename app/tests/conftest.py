@@ -23,5 +23,5 @@ def es(setup_env):
 def hotel_reviews():
     import json
 
-    with open("workflows/mocks/booking_hotel_reviews.json") as f:
+    with open("workflows/dry_provider/booking_hotel_reviews.json") as f:
         return json.load(f)
