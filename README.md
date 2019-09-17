@@ -12,7 +12,7 @@
 OR DEVELOPMENT PURPOSES:
     
 1. Create network:  
-    - `docker network hotel_review`
+    - `docker network create hotel_review`
 2. Build application:   
     - `docker-compose build`
 2. Run application

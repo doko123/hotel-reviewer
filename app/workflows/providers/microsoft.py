@@ -38,11 +38,8 @@ class MicrosoftManager:
         )
         if not sentiment_response:
             if settings.AZURE_OUTDATED:
-                return uniform(2.5, 100.0)
+                return uniform(30, 100.0)
             return 0
-        # scores_sum = sum(
-        #     (sentiment["score"] for sentiment in sentiment_response)
-        # )
         reduced_scores = [
             s["score"] for s in sentiment_response if s["score"] > 0.5
         ]

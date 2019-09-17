@@ -1,6 +1,7 @@
 celery
 dynaconf
 flask
+flask_injector
 flask_restful
 funcy
 requests
@@ -18,5 +19,7 @@ elasticsearch
 gunicorn
 selenium
 js
-pytest-mock
+mock
 meinheld
+afinn
+timeout-decorator
